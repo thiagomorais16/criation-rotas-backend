@@ -15,4 +15,3 @@ mongoose.connect(MONGO_DB, {
         console.error('Error connection to MongoDB', error);
     });
 
-module.exports = mongo;
