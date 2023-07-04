@@ -1,26 +1,42 @@
 const express = require('express');
 const router = express.Router();
-const Exemplo = require('./models');
+const Cadastro = require('./models');
 
-router.get('/exemplos', (req, res) => {
-    Exemplo.find()
-    .then((Exemplo) => {
-        res.json (exemplos);
-    })
-    .catch((error) => {
-        res.status(500).json({ error: error.message});
-    
-    });
+router.get('/cadastros', async (req, res) => {
+    try {
+        let livros = await Cadastro.find()
+        res.status(200).json(livros);
+    } catch (error) {
+        res.status(500).json(error);
+    }
 });
-router.post('/exemplos', (req, res) => {
-    const exemplo = new Exemplo (req.body);
-    exemplo.save()
-    .then(() => {
-        res.status(201).json (exemplo);
-    })
-    .catch((error) => {
-        res.status(500).json({ error: error.message });
-    });
-})
+router.post('/cadastro', (req, res) => {
+    const livro = new Cadastro(req.body);
+    livro.save()
+        .then(() => {
+            res.status(201).json(livro);
+        })
+        .catch((error) => {
+            res.status(500).json({ error: error.message });
+        });
+});
+router.put('/cadastro/:id', (req, res) => {
+    Cadastro.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        .then((Cadastro) => {
+            res.json(livros);
+        })
+        .catch((error) => {
+            res.status(500).json({ error: error.message });
+        });
+});
+router.delete('/cadastro/:id', (req, res) => {
+    Cadastro.findByIdAndDelete(req.params.id)
+        .then((Cadastro) => {
+            res.json({ message: 'livro deletado' });
+        })
+        .catch((error) => {
+            res.status(500).json({ error: error.message });
+        });
+});
 
 module.exports = router;

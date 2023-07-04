@@ -1,9 +1,14 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
-const routes = require('./routes');
+const router = require('./routes');
+const mongo = require('./db');
+
 
 app.use(express.json());
-app.use('/', routes);
+app.use(cors());
+app.use(mongo);
+app.use(router);
 app.get('/', (req, res) => {
     res.send("hola, tudo bem");
 });

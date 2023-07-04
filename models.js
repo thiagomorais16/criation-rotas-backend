@@ -2,11 +2,14 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const exemploSchema = new Schema({
-    nome: String,
-    idade: Number
+const cadastroSchema = new Schema({
+    id: Number,
+    titulo: String,
+    paginas: Number,
+    isbn: Number,
+    editora: String
 });
 
-const Exemplo = mongoose.model('Exemplo', exemploSchema);
+const Cadastro = mongoose.model('Cadastro', cadastroSchema);
 
-module.exports = Exemplo;
+module.exports = Cadastro;
