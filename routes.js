@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Cadastro = require('./models');
 
-router.get('/cadastros', async (req, res) => {
+router.get('/cadastro', async (req, res) => {
     try {
         let livros = await Cadastro.find()
         res.status(200).json(livros);
@@ -10,9 +10,10 @@ router.get('/cadastros', async (req, res) => {
         res.status(500).json(error);
     }
 });
-router.post('/cadastro', (req, res) => {
+
+router.post('/cadastro', async (req, res) => {
     const livro = new Cadastro(req.body);
-    livro.save()
+    await livro.save()
         .then(() => {
             res.status(201).json(livro);
         })

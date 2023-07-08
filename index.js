@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const router = require('./routes');
-const db = require('./db');
+const db = require('./db.js')
+
 
 app.use(express.json());
 app.use(cors());
@@ -11,6 +12,11 @@ app.get('/', (req, res) => {
     res.send("hola, tudo bem");
 });
 
-app.listen(4000, () => {
-    console.log("funcionando na porta 4000")
-});
+db.then(() => {
+    app.listen(4000, () => {
+        console.log("funcionando na porta 4000")
+    });
+})
+    .catch((error) => {
+        res.status(400)
+    });

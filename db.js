@@ -1,17 +1,22 @@
 const mongoose = require('mongoose');
-const { db } = require('./models');
-require('dotenv').config();
+const dotenv = require("dotenv");
+dotenv.config();
 
-const MONGO_DB = process.env.MONGO_DB;
-mongoose.connect(MONGO_DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
 
-    .then(() => {
-        console.log('Conectado no MongoDB');
-    })
-    .catch((error) => {
-        console.error('Error connection to MongoDB', error);
-    });
+const conectarDados = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_DB, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        })
+        console.log("conectado no banco de dados")
+        return mongoose
+    }
+    catch (error) {
+        console.log(error)
+    }
 
+
+};
+
+module.exports = conectarDados()
