@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 const cadastroSchema = new Schema({
     id: Number,
     titulo: String,
-    paginas: Number,
-    isbn: Number,
+    numeroPaginas: Number,
+    codigoISBN: Number,
     editora: String
 });
 
