@@ -1,14 +1,35 @@
 const express = require('express');
 const router = express.Router();
 const Cadastro = require('./models');
-const { isEqual } = require('lodash');
+
 
 router.get('/cadastro', async (req, res) => {
     try {
-        let livros = await Cadastro.find()
-        res.status(200).json(livros);
+        const { nome, id, codigoISBN } = req.query;
+
+        //Verificar se algum parâmetro de busca foi fornecido
+        if (!nome && !id && !codigoISBN) {
+            return res.status(400).json({ message: 'Forneça um parâmetro de busca válido' });
+        }
+
+        // Construir o objeto de filtro com base nos parâmetros fornecidos
+        const filtro = {};
+        if (nome) {
+            filtro.nome = nome;
+        }
+        if (id) {
+            filtro._id = id;
+        }
+        if (codigoISBN) {
+            filtro.codigoISBN = codigoISBN;
+        }
+
+        //Realizar a busca no banco de dados
+        const livros = await Cadastro.find(filtro);
+
+        res.json(livros);
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).json({ error: error.message });
     }
 });
 
@@ -69,6 +90,7 @@ router.put('/cadastro/:id', async (req, res) => {
 });
 router.delete('/cadastro/:id', async (req, res) => {
     try {
+
         await Cadastro.findByIdAndDelete(req.params.id);
         res.json({ message: 'Cadastro Deletado' });
     } catch (error) {
