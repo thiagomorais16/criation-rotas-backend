@@ -3,33 +3,13 @@ const router = express.Router();
 const Cadastro = require('./models');
 
 
+
 router.get('/cadastro', async (req, res) => {
     try {
-        const { nome, id, codigoISBN } = req.query;
-
-        //Verificar se algum parâmetro de busca foi fornecido
-        if (!nome && !id && !codigoISBN) {
-            return res.status(400).json({ message: 'Forneça um parâmetro de busca válido' });
-        }
-
-        // Construir o objeto de filtro com base nos parâmetros fornecidos
-        const filtro = {};
-        if (nome) {
-            filtro.nome = nome;
-        }
-        if (id) {
-            filtro._id = id;
-        }
-        if (codigoISBN) {
-            filtro.codigoISBN = codigoISBN;
-        }
-
-        //Realizar a busca no banco de dados
-        const livros = await Cadastro.find(filtro);
-
-        res.json(livros);
+        let livros = await Cadastro.find()
+        res.status(200).json(livros);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json(error);
     }
 });
 
@@ -57,7 +37,7 @@ router.post('/cadastro', async (req, res) => {
             return res.status(400).json({ message: 'O código ISBN precisa ser um número válido e diferente de zero' });
         }
         // Todos os dados estão válidos, pode prosseguir com o cadastro
-        const livroNovo = new livroNovo(req.body);
+        const livroNovo = new Cadastro(req.body);
         await livroNovo.save();
         res.status(201).json(livro);
     } catch (error) {
@@ -69,16 +49,11 @@ router.put('/cadastro/:id', async (req, res) => {
         const updateId = req.params.id;
         const novosDados = req.body;
 
-        const existenteId = await cadastro.findById(updateId);
+        const existenteId = await Cadastro.findById(updateId);
 
         // verificar se o id existe
         if (!existenteId) {
             return res.status(404).json({ message: 'Id não encontrado' });
-        }
-
-        // Verificar se houve alguma mudança nos dados
-        if (isEqual(novosDados, existenteId.toObject())) {
-            return res.status(400).json({ message: 'Não houve alterações nos dados' });
         }
 
         // Realizar a atualizações dos dados
@@ -90,7 +65,6 @@ router.put('/cadastro/:id', async (req, res) => {
 });
 router.delete('/cadastro/:id', async (req, res) => {
     try {
-
         await Cadastro.findByIdAndDelete(req.params.id);
         res.json({ message: 'Cadastro Deletado' });
     } catch (error) {
