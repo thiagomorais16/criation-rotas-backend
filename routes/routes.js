@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Cadastro = require('./models');
+const Cadastro = require('../models/models');
 
 
 
@@ -16,10 +16,10 @@ router.get('/cadastro', async (req, res) => {
 router.post('/cadastro', async (req, res) => {
 
     try {
-        const { titulo, numeroPaginas, codigoISBN, editora } = req.body;
+        const { nome, titulo, numeroPaginas, codigoISBN, editora } = req.body;
 
         //Verificar se todos os campos obrigatórios estão presentes
-        if (!titulo || !numeroPaginas || !codigoISBN || !editora) {
+        if (!nome || !titulo || !numeroPaginas || !codigoISBN || !editora) {
             return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
         }
         // Verificar se o titulo já existe
