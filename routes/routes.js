@@ -16,10 +16,10 @@ router.get('/cadastro', async (req, res) => {
 router.post('/cadastro', async (req, res) => {
 
     try {
-        const { nome, titulo, numeroPaginas, codigoISBN, editora } = req.body;
+        const { id, titulo, numeroPaginas, codigoISBN, editora } = req.body;
 
         //Verificar se todos os campos obrigatórios estão presentes
-        if (!nome || !titulo || !numeroPaginas || !codigoISBN || !editora) {
+        if (!id || !titulo || !numeroPaginas || !codigoISBN || !editora) {
             return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
         }
         // Verificar se o titulo já existe
@@ -35,6 +35,10 @@ router.post('/cadastro', async (req, res) => {
         // Verificar se o código ISBN é válido
         if (codigoISBN === 0 || typeof codigoISBN !== 'number') {
             return res.status(400).json({ message: 'O código ISBN precisa ser um número válido e diferente de zero' });
+        }
+        // Verificar se o id é valido
+        if (id === 0 || typeof id !== 'number') {
+            return res.status(400).json({ message: 'O id precisa ser um número válido e diferente de zero' })
         }
         // Todos os dados estão válidos, pode prosseguir com o cadastro
         const livroNovo = new Cadastro(req.body);
