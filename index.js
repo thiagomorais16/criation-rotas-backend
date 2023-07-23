@@ -14,8 +14,8 @@ app.get('/', (req, res) => {
 });
 
 db.then(() => {
-    app.listen(4000, () => {
-        console.log("funcionando na porta 4000")
+    app.listen(3000, () => {
+        console.log("funcionando na porta 3000")
     });
 })
     .catch((error) => {
