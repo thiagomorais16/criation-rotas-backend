@@ -38,28 +38,29 @@ router.post('/livros', async (req, res) => {
     }
 });
 router.put('/livros/:id', async (req, res) => {
+    console.log("oi")
     try {
+        console.log("oi")
         const updateId = req.params.id;
         const novosDados = req.body;
 
+        // Verificar se o livro com o ID existe
         const existenteId = await Cadastro.findById(updateId);
-
-        // verificar se o id existe
         if (!existenteId) {
             return res.status(404).json({ message: 'Id não encontrado' });
         }
 
-        // Realizar a atualizações dos dados
-        const atualizadoId = await Cadastro.findByIdAndUpdate(updateId, novosDados, { new: true });
+        // Realizar a atualização dos dados
+        const atualizadoId = await Cadastro.findOneAndDelete(updateId, novosDados, { new: true });
         res.json(atualizadoId);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
 router.delete('/livros/:id', async (req, res) => {
     try {
-        console.log("oi");
-        await Cadastro.findByIdAndDelete(req.params.id);
+        const cadastroEncontrado = await Cadastro.findOneAndDelete({ id: req.params.id });
         res.json({ message: 'Cadastro Deletado' });
     } catch (error) {
         res.status(500).json({ error: error.message });
