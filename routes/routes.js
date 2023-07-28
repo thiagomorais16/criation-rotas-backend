@@ -44,7 +44,7 @@ router.put('/livros/:id', async (req, res) => {
         const novosDados = req.body;
 
         // Verificar se o livro com o ID existe
-        const existenteId = await Cadastro.findById(updateId);
+        const existenteId = await Cadastro.findById(req.params.id);
         if (!existenteId) {
             return res.status(404).json({ message: 'Id não encontrado' });
         }
