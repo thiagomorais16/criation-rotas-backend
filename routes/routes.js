@@ -38,24 +38,24 @@ router.post('/livros', async (req, res) => {
     }
 });
 router.put('/livros/:id', async (req, res) => {
-    console.log("oi")
+    console.log(req.body);
     try {
-        const updateId = req.params.id;
+        const id = req.params.id;
         const novosDados = req.body;
 
         // Verificar se o livro com o ID existe
-        const existenteId = await Cadastro.findById(req.params.id);
+        const existenteId = await Cadastro.findOneAndUpdate({ id }, { $set: req.body });
+
         if (!existenteId) {
             return res.status(404).json({ message: 'Id não encontrado' });
         }
 
-        // Realizar a atualização dos dados
-        const atualizadoId = await Cadastro.findOneAndUpdate(updateId, novosDados, { new: true });
-        res.json(atualizadoId);
+        res.json(existenteId);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 router.delete('/livros/:id', async (req, res) => {
     try {
