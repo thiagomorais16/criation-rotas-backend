@@ -40,7 +40,6 @@ router.post('/livros', async (req, res) => {
 router.put('/livros/:id', async (req, res) => {
     console.log("oi")
     try {
-        console.log("oi")
         const updateId = req.params.id;
         const novosDados = req.body;
 
@@ -51,7 +50,7 @@ router.put('/livros/:id', async (req, res) => {
         }
 
         // Realizar a atualização dos dados
-        const atualizadoId = await Cadastro.findOneAndDelete(updateId, novosDados, { new: true });
+        const atualizadoId = await Cadastro.findOneAndUpdate(updateId, novosDados, { new: true });
         res.json(atualizadoId);
     } catch (error) {
         res.status(500).json({ error: error.message });
