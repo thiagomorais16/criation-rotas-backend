@@ -12,6 +12,14 @@ router.get('/livros', async (req, res) => {
         res.status(500).json(error);
     }
 });
+router.get('/livros/:id', async (req, res) => {
+    try {
+        let livros = await Cadastro.findOne({ id: req.params.id })
+        res.status(200).json(livros);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
 
 router.post('/livros', async (req, res) => {
 
